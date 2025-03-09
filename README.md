@@ -95,6 +95,98 @@ Confusion matrix: **`sklearn.metrics.confusion_matrix`**
 
 Calculate Precision, Recall and Accuracy: **`sklearn.**metrics` (the docs elaborate the metrics)
 
+Possible future developments:
+
+- Use a 3D stack to perform classification to enable more data to be seen
+- Use a more specific algorithm for classification rather than just a generic CNN
+- Use a U-Net for highlight infected regions
+
+# *Continue Mission* - Pneumonia Severity
+
+**Goal:** Deduce a method to determine the severity of the infection (COVID-19 or pneumonia) in addition to just classification.
+
+**Approach:**
+
+If we can get a regressor to determine the percentage of infection, we can map this onto the characteristics of the infection.
+
+The difficulty lies in designing a regressor to work with image data. 
+
+General regression model can be used with a neural network with one output which is either linear or sigmoid. This approach should be the best blanket technique.
+
+![image.png](image%201.png)
+
+The main problem to be solved is to avoid the model from predicting the mean of y values all the time. Possible options available:
+
+- Larger Neural Network
+- Mean Squared Log-scaled Error Loss
+
+## Data collection
+
+The following datasets are earmarked for having data about the severity of pneumonia:
+
+- **COVID-CT-MD**
+    
+    Link to dataset: https://springernature.figshare.com/articles/dataset/COVID-CT-MD_COVID-19_Computed_Tomography_Scan_Dataset_Applicable_in_Machine_Learning_and_Deep_Learning/12991592?file=26069987
+    
+    Severity measure: Clinical data is presented in "Clinical-data.csv” which including symptoms, characteristics, patient history, and RT-PCR outcome if available
+    
+    Possible points of concern:
+    
+    - The dataset is 10 GB (⚠️ too large to be downloaded)
+    - Images are stored in DICOM format
+    
+    Info about the dataset can be obtained at https://www.nature.com/articles/s41597-021-00900-3.
+    
+- **COVID-19 CT Segmentation Dataset**
+    
+    Comprising 40 CT scans with 100 annotated slices, this dataset focuses on segmentation tasks, which are crucial for identifying infected regions and determining infection severity.
+    
+    [PubMed Central](https://pmc.ncbi.nlm.nih.gov/articles/PMC8468956/?utm_source=chatgpt.com)
+    
+- **COVID-19-CT-Seg-Benchmark Dataset**
+    
+    Containing 20 COVID-19 CT scans with 1,800 slices, including 300 infected slices, this dataset is valuable for segmentation and severity assessment tasks.
+    
+    [PubMed Central](https://pmc.ncbi.nlm.nih.gov/articles/PMC8468956/?utm_source=chatgpt.com)
+    
+- **COVID-19 Percentage Estimation Dataset**
+    
+    This dataset provides 183 CT scans with slice-level annotations estimating the percentage of lung infection, aiding in quantifying infection severity.
+    
+    [PubMed Central](https://pmc.ncbi.nlm.nih.gov/articles/PMC8468956/?utm_source=chatgpt.com)
+    
+- **SARS-CoV-2 CT-Scan Dataset**:
+    
+    Containing 1,252 CT scan images from COVID-19 patients and 1,230 images from non-infected individuals, this dataset can be used for classification and severity assessment tasks.
+    
+    [Frontiers in](https://www.frontiersin.org/articles/10.3389/fmicb.2022.995323/full?utm_source=chatgpt.com)
+    
+- **COVID-CT Dataset**
+    
+    This dataset includes 349 COVID-19 positive CT images from 216 patients and 463 non-COVID-19 CT images, useful for training models to distinguish between COVID-19 and other conditions.
+    
+    [ResearchGate](https://www.researchgate.net/publication/340331511_COVID-CT-Dataset_A_CT_Scan_Dataset_about_COVID-19?utm_source=chatgpt.com)
+    
+- **HRCTCov19 Dataset**
+    
+    Offering 181,106 high-resolution chest CT images from 395 patients, this dataset includes labels for Ground Glass Opacity, Crazy Paving, Air Space Consolidation, and Negative cases, facilitating detailed analysis of infection severity.
+    
+    [ArXiv](https://arxiv.org/abs/2205.03408?utm_source=chatgpt.com)
+    
+- **COVID-19 Severity Assessment Dataset**
+    
+    This dataset includes CT scans with severity labels, enabling the development of models that can classify the severity levels of COVID-19 infections.
+    
+    [ArXiv](https://arxiv.org/abs/2205.13774?utm_source=chatgpt.com)
+    
+
+## Post-build: model evaluation
+
+The following metrics will be used to evaluate the model:
+
+- **sklearn.metrics.root_mean_squared_error** - RMS of the deviation from the actual value
+- **sklearn.metrics.r2_score** - gives the coefficient of determination (regression score function)
+
 # Additional References
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC8085195/
@@ -114,7 +206,7 @@ This section is to be removed later.
 
 </aside>
 
-The highest validation accuracy achieved on the training set was `0.95455`.
+For the classification model, the highest validation accuracy achieved on the training set was `0.95455`.
 
 The following are the metrics for the test set:
 
@@ -125,6 +217,15 @@ Recall: 0.8723404255319149
 AUC: 0.9308367816770261
 ```
 
-![image.png](image%201.png)
+![image.png](image%202.png)
 
 The file of weights in the local directory corresponds to these results.
+
+For the severity identification model, the best scores yielded so far are as follows:
+
+```
+The model yielded
+r2 score: 0.801916712367247
+mse score: 12.321733274800428
+loss: 7.047403323769868
+```
