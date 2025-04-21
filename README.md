@@ -79,15 +79,19 @@ The actual first iteration implementation involves an innovation to CNN training
 
 **Segmentation** 
 
-The baseline model will be built using a U-Net. This is a supervised learning approach.
-
-An unsupervised learning approach will be attempted:
+A baseline model will be built using an unsupervised learning approach will be attempted:
 
 1. The image will be broken up into a 16 by 16 grid.
 2. Each box will be blacked out in turn
 3. The images produced will be fed into the neural network
 4. The increases in the diagnosed class will be noted for each image
 5. A mask will be produced, predicting the probability of each region being the infected region
+
+The problem will also be attempted using a **U-Net**. This is a supervised learning approach.
+
+The training data for the U-Net will be the segments from the original method.
+
+However, if dedicated data about infected regions in infected lungs is present, that would be better. This is because the training data for now is itself only around 80% accurate.
 
 ## Post-build: model evaluation
 
