@@ -1,6 +1,10 @@
 # CT classification
 
-Status: In progress
+**Exploratory learning project.** [Open the notebook](notebookb0bf2e321b.ipynb) to see the experiment. This repository is not a validated diagnostic or segmentation tool. The design notes below describe goals and possible approaches, not capabilities or published results.
+
+A trustworthy future evaluation would split by patient before preprocessing or model selection, so slices from one person cannot appear in both training and evaluation sets. Review the upstream datasets' terms before reusing data or images.
+
+## Historical design notes
 
 The objective of this build is to design an algorithm that can **classify** a **CT image** into different types of **pneumonia**. Additionally, the algorithm needs to **segment** the **CT image** to highlight the location of the infection. 
 
